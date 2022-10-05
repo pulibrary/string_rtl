@@ -1,0 +1,39 @@
+version: 2.1
+jobs:
+  test:
+    parameters:
+      ruby:
+        description: "Ruby version"
+        default: "2.7.5"
+        type: "string"
+    docker:
+      - image: cimg/ruby:<< parameters.ruby >>
+    steps:
+      - checkout
+      - run:
+          name: Run the default task
+          command: |
+            gem install bundler -v 2.3.22
+            bundle install
+            bundle exec rake
+  # rubocop:
+  #   parameters:
+  #   docker:
+  #     - image: cimg/ruby:3.0.0
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run rubocop
+  #         command: |
+  #           gem install bundler -v 2.3.22
+  #           bundle install
+  #           bundle exec rubocop
+
+workflows:
+  all-tests:
+    jobs:
+      # - rubocop
+      - test:
+          matrix:
+            parameters:
+              ruby: ["2.7.5", "3.0.0"]
