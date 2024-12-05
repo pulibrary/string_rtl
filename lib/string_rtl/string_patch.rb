@@ -24,7 +24,7 @@ class String
   def dir(opts = {})
     opts.fetch(:check_indexes, CHECK_INDEXES).each do |i|
       RTL_RANGE.each do |subrange|
-        return "rtl" if subrange.cover?(self[i].unpack('U*0')[0]) if self[i]
+        return "rtl" if subrange.cover?(self[i].unpack('U*')[0]) if self[i]
       end
     end
     "ltr"
